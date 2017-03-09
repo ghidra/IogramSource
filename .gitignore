@@ -1,0 +1,11 @@
+Components/CMakeFiles/*
+Components/Makefile
+Components/cmake_install.cmake
+Core/CMakeFiles/*
+Core/Makefile
+Core/cmake_install.cmake
+Core/libCore.a
+Geometry/CMakeFiles/*
+Geometry/Makefile
+Geometry/cmake_install.cmake
+Geometry/libGeometry.a
