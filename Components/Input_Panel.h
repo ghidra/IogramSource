@@ -24,7 +24,7 @@
 
 #include <Urho3D/UI/Button.h>
 #include <Urho3D/UI/LineEdit.h>
-#include <Urho3D/UI/MultiLineEdit.h>
+#include "../Urho3D/UI/MultiLineEdit.h"
 #include <Urho3D/UI/DropDownList.h>
 
 #include "IoComponentBase.h"
