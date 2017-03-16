@@ -19,15 +19,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "../Precompiled.h"
-#include "../Core/Context.h"
-#include "../Input/Input.h"
-#include "../UI/LineEdit.h"
-#include "../UI/Text.h"
-#include "../UI/UI.h"
-#include "../UI/UIEvents.h"
-#include "../DebugNew.h"
+#include <Urho3D/Precompiled.h>
+#include <Urho3D/Core/Context.h>
+#include <Urho3D/Input/Input.h>
+#include <Urho3D/UI/LineEdit.h>
+#include <Urho3D/UI/Text.h>
 #include "MultiLineEdit.h"
+#include <Urho3D/UI/UI.h>
+#include <Urho3D/UI/UIEvents.h>
+#include <Urho3D/DebugNew.h>
+
+#include <Urho3D/IO/Log.h>
 
 namespace Urho3D
 {
@@ -35,6 +37,7 @@ namespace Urho3D
 	StringHash VAR_ML_DRAGDROPCONTENT("DragDropContent");
 
 	extern const char* UI_CATEGORY;
+	//const char* UI_CATEGORY = "UI";
 
 	MultiLineEdit::MultiLineEdit(Context* context) :
 		BorderImage(context),
@@ -49,7 +52,7 @@ namespace Urho3D
 		cursorMovable_(true),
 		textSelectable_(true),
 		textCopyable_(true),
-		multiLine_(false)
+		multiLine_(true)
 	{
 		clipChildren_ = true;
 		SetEnabled(true);
@@ -58,8 +61,13 @@ namespace Urho3D
 		text_ = CreateChild<Text>("LE_Text");
 		text_->SetInternal(true);
 		cursor_ = CreateChild<BorderImage>("LE_Cursor");
+		cursor_->SetBorder(IntRect(0, 0, 0, 0));
+		cursor_->SetClipBorder(IntRect(0, 0, 0, 0));
+		cursor_->SetMinSize(1, 1);
+		cursor_->SetMaxWidth(2);
 		cursor_->SetInternal(true);
 		cursor_->SetPriority(1); // Show over text
+		cursor_->SetUseDerivedOpacity(false);
 
 		SubscribeToEvent(this, E_FOCUSED, URHO3D_HANDLER(MultiLineEdit, HandleFocused));
 		SubscribeToEvent(this, E_DEFOCUSED, URHO3D_HANDLER(MultiLineEdit, HandleDefocused));
@@ -241,19 +249,23 @@ namespace Urho3D
 		bool changed = false;
 		bool cursorMoved = false;
 
+		if (!editable_)
+			return;
+
 		switch (key)
 		{
-		case 'X':
-		case 'C':
+		case KEY_X:
+		case KEY_C:
 			if (textCopyable_ && qualifiers & QUAL_CTRL)
 			{
+				URHO3D_LOGINFO("attempting copy");
 				unsigned start = text_->GetSelectionStart();
 				unsigned length = text_->GetSelectionLength();
 
 				if (text_->GetSelectionLength())
 					GetSubsystem<UI>()->SetClipboardText(line_.SubstringUTF8(start, length));
 
-				if (key == 'X' && editable_)
+				if (key == KEY_X && editable_)
 				{
 					if (start + length < line_.LengthUTF8())
 						line_ = line_.SubstringUTF8(0, start) + line_.SubstringUTF8(start + length);
@@ -266,9 +278,10 @@ namespace Urho3D
 			}
 			break;
 
-		case 'V':
+		case KEY_V:
 			if (editable_ && textCopyable_ && qualifiers & QUAL_CTRL)
 			{
+				URHO3D_LOGINFO("attempting paste");
 				const String& clipBoard = GetSubsystem<UI>()->GetClipboardText();
 				if (!clipBoard.Empty())
 				{
@@ -361,6 +374,7 @@ namespace Urho3D
 		case KEY_DELETE:
 			if (editable_)
 			{
+				URHO3D_LOGINFO("Deleting multi line text");
 				if (!text_->GetSelectionLength())
 				{
 					if (cursorPosition_ < line_.LengthUTF8())
@@ -407,6 +421,14 @@ namespace Urho3D
 				}
 
 			}
+
+			if (editable_ && qualifiers & QUAL_CTRL)
+			{
+				int currSize = text_->GetFontSize();
+				currSize += 2;
+				text_->SetFontSize(currSize);
+			}
+
 			changed = true;
 			break;
 
@@ -446,6 +468,15 @@ namespace Urho3D
 				}
 
 			}
+
+			if (editable_ && qualifiers & QUAL_CTRL)
+			{
+				int currSize = text_->GetFontSize();
+				currSize -= 2;
+				currSize = Clamp(currSize, 6, 1000);
+				text_->SetFontSize(currSize);
+			}
+
 			changed = true;
 			break;
 		case KEY_PAGEUP:
@@ -465,6 +496,7 @@ namespace Urho3D
 		case KEY_BACKSPACE:
 			if (editable_)
 			{
+				URHO3D_LOGINFO("Deleting multi line text");
 				if (!text_->GetSelectionLength())
 				{
 					if (line_.LengthUTF8() && cursorPosition_)
@@ -728,9 +760,10 @@ namespace Urho3D
 
 
 		text_->SetPosition(GetIndentWidth() + clipBorder_.left_, clipBorder_.top_);
-		cursor_->SetPosition(text_->GetPosition() + IntVector2(x - text_->GetCharSize(cursorPosition_).x_ / 2, y));
+		cursor_->SetPosition(text_->GetPosition() + IntVector2(x, y));
 		//cursor_->SetSize(cursor_->GetWidth(), text_->GetRowHeight());
-		cursor_->SetSize(2, text_->GetRowHeight());
+		cursor_->SetFixedSize(1, text_->GetRowHeight());
+		cursor_->SetSize(1, text_->GetRowHeight());
 		// Scroll if necessary
 		int sx = -GetChildOffset().x_;
 		int left = clipBorder_.left_;
