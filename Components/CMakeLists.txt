@@ -30,13 +30,13 @@ add_definitions(-DNOMINMAX)
 #add_definitions(-DSHAPEOP_HEADER_ONLY)
 
 #define includes
-include_directories("../ThirdParty")
-include_directories("../ThirdParty/Libigl")
-include_directories("../ThirdParty/Eigen")
-include_directories("../ThirdParty/ShapeOp")
-include_directories("../ThirdParty/Assimp/include")
+#include_directories("../ThirdParty")
+#include_directories("../ThirdParty/Libigl")
+#include_directories("../ThirdParty/Eigen")
+#include_directories("../ThirdParty/ShapeOp")
+#include_directories("../ThirdParty/Assimp/include")
 include_directories("../Core")
-include_directories("../Geometry")
+#include_directories("../Geometry")
 
 # Define source files
 #define_source_files (RECURSE GROUP)
@@ -49,7 +49,7 @@ set(RESOURCE_DIRS "")
 setup_library ()
 
 target_link_libraries(Components Core)
-target_link_libraries(Components Geometry)
+#target_link_libraries(Components Geometry)
 
 #compile flags
 if(UNIX)

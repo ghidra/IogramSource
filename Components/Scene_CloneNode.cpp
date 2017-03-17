@@ -24,7 +24,7 @@
 
 #include "IoGraph.h"
 
-#include "Geomlib_ConstructTransform.h"
+//#include "Geomlib_ConstructTransform.h"
 #include <Urho3D/Graphics/StaticModel.h>
 
 using namespace Urho3D;
@@ -119,7 +119,7 @@ void Scene_CloneNode::SolveInstance(
 	if (inSolveInstance[1].GetType() != VAR_NONE)
 	{
 		// construct transform:
-		Matrix3x4 xform = Geomlib::ConstructTransform(inSolveInstance[1], clonedNode->GetTransform());
+		Matrix3x4 xform = Matrix3x4();//Geomlib::ConstructTransform(inSolveInstance[1], clonedNode->GetTransform());
 
 		//apply transform	
 		clonedNode->SetPosition(xform.Translation());

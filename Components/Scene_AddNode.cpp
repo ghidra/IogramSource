@@ -24,7 +24,7 @@
 
 #include "IoGraph.h"
 
-#include "Geomlib_ConstructTransform.h"
+//#include "Geomlib_ConstructTransform.h"
 
 using namespace Urho3D;
 
@@ -103,7 +103,7 @@ void Scene_AddNode::SolveInstance(
 	}
 
 	// construct transform:
-	Matrix3x4 xform = Geomlib::ConstructTransform(inSolveInstance[0]);
+	Matrix3x4 xform = Matrix3x4();//Geomlib::ConstructTransform(inSolveInstance[0]);
 
 	//apply transform	
 	newNode->SetPosition(xform.Translation());

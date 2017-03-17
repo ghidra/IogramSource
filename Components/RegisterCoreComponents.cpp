@@ -30,7 +30,7 @@ In order for a graph component to work with the system,
 you must include it here and follow the registration pattern in RegisterComponents
 */
 
-#include "Maths_Addition.h"
+/*#include "Maths_Addition.h"
 #include "Maths_Subtraction.h"
 #include "Maths_Multiplication.h"
 #include "Maths_Division.h"
@@ -241,12 +241,44 @@ you must include it here and follow the registration pattern in RegisterComponen
 #include "ShapeOp_GeometryStrain.h"
 #include "ShapeOp_MeshTriangleStrain.h"
 #include "ShapeOp_GenericConstraint.h"
+*/
+
+
+#include "Scene_AddNode.h"
+#include "Scene_CloneNode.h"
+#include "Scene_AddStaticModel.h"
+#include "Scene_AnimatedModel.h"
+#include "Scene_MouseClickListener.h"
+#include "Scene_ModifyNode.h"
+#include "Scene_GetNode.h"
+#include "Scene_GetComponent.h"
+#include "Scene_AddComponent.h"
+#include "Scene_ModifyComponent.h"
+#include "Scene_HandleEvent.h"
+#include "Scene_GetGlobalVar.h"
+#include "Scene_LoadScene.h"
+#include "Scene_AppendRenderPath.h"
 
 using namespace Urho3D;
 
 void RegisterCoreComponents(Context* context)
 {
 
+	RegisterIogramType<Scene_AddNode>(context);
+	RegisterIogramType<Scene_CloneNode>(context);
+	RegisterIogramType<Scene_AddStaticModel>(context);
+	RegisterIogramType<Scene_AnimatedModel>(context);
+	RegisterIogramType<Scene_MouseClickListener>(context);
+	RegisterIogramType<Scene_ModifyNode>(context);
+	RegisterIogramType<Scene_GetNode>(context);
+	RegisterIogramType<Scene_GetComponent>(context);
+	RegisterIogramType<Scene_AddComponent>(context);
+	RegisterIogramType<Scene_ModifyComponent>(context);
+	RegisterIogramType<Scene_HandleEvent>(context);
+	RegisterIogramType<Scene_GetGlobalVar>(context);
+	RegisterIogramType<Scene_LoadScene>(context);
+	RegisterIogramType<Scene_AppendRenderPath>(context);
+/*
 	context->RegisterFactory<Widget_Base>();
 	context->RegisterFactory<Widget_OptionSlider>();
 	context->RegisterFactory<Widget_Container>();
@@ -460,4 +492,5 @@ void RegisterCoreComponents(Context* context)
 	RegisterIogramType<ShapeOp_GeometryStrain>(context);
 	RegisterIogramType<ShapeOp_MeshTriangleStrain>(context);
 	RegisterIogramType<ShapeOp_GenericConstraint>(context);
+	*/
 }

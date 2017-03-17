@@ -21,7 +21,7 @@
 
 
 #include "Scene_LoadScene.h"
-#include "OrbitCamera.h"
+//#include "OrbitCamera.h"
 
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Graphics/Camera.h>
@@ -99,7 +99,7 @@ void Scene_LoadScene::SolveInstance(
 			outSolveInstance[0] = scene;
 
 			//add orbit camera back in
-			OrbitCamera* orbitCamera = scene->GetComponent<OrbitCamera>(true);
+			/*OrbitCamera* orbitCamera = scene->GetComponent<OrbitCamera>(true);
 			if (!orbitCamera)
 			{
 				Node* cameraNode_ = scene->CreateChild("OrbitCamera");
@@ -113,7 +113,7 @@ void Scene_LoadScene::SolveInstance(
 			if (vp && cam)
 			{
 				vp->SetCamera(cam);
-			}
+			}*/
 
 
 			return;
@@ -141,7 +141,7 @@ void Scene_LoadScene::SolveInstance(
 
 			//add orbit camera back in
 			// Create the camera
-			OrbitCamera* orbitCamera = scene->GetComponent<OrbitCamera>(true);
+			/*OrbitCamera* orbitCamera = scene->GetComponent<OrbitCamera>(true);
 			if (!orbitCamera)
 			{
 				Node* cameraNode_ = scene->CreateChild("OrbitCamera");
@@ -156,6 +156,7 @@ void Scene_LoadScene::SolveInstance(
 			{
 				vp->SetCamera(cam);
 			}
+			*/
 
 
 			return;
