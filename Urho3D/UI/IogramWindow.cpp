@@ -27,7 +27,9 @@
 #include <Urho3D/UI/Cursor.h>
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/UI/UIEvents.h>
+
 #include "IogramWindow.h"
+#include "../../Core/IoComponentBase.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -51,6 +53,15 @@ IogramWindow::IogramWindow(Context* context) :
     //URHO3D_LOGWARNING("THIS IS A IOGRAM WINDOW");
     //NOTES
     //maybe make other gui elements for this.. IE paramater window
+    StringHash typeHash("IoComponentBase");
+    const HashMap<StringHash, SharedPtr<ObjectFactory> >& factories = context_->GetObjectFactories();
+    HashMap<StringHash, SharedPtr<ObjectFactory> >::ConstIterator j = factories.Find(typeHash);
+    URHO3D_LOGRAW("FOUND A");
+    if (j != factories.End())
+    {
+        URHO3D_LOGRAW("FOUND A");//i->first_
+    }
+
 }
 
 IogramWindow::~IogramWindow()
