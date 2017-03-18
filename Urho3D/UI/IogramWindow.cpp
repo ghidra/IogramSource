@@ -28,6 +28,8 @@
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/UI/UIEvents.h>
 
+#include <Urho3D/Resource/ResourceCache.h>
+
 #include "IogramWindow.h"
 #include "../../Core/IoComponentBase.h"
 
@@ -52,16 +54,57 @@ IogramWindow::IogramWindow(Context* context) :
 
     //URHO3D_LOGWARNING("THIS IS A IOGRAM WINDOW");
     //NOTES
-    //maybe make other gui elements for this.. IE paramater window
-    StringHash typeHash("IoComponentBase");
+    //Should i get this everytime i make a window?
+    //one argument, it would let me get only the relevant nodes to whatever specific context this graph is
     const HashMap<StringHash, SharedPtr<ObjectFactory> >& factories = context_->GetObjectFactories();
-    HashMap<StringHash, SharedPtr<ObjectFactory> >::ConstIterator j = factories.Find(typeHash);
-    URHO3D_LOGRAW("FOUND A");
-    if (j != factories.End())
-    {
-        URHO3D_LOGRAW("FOUND A");//i->first_
+    HashMap<StringHash, SharedPtr<ObjectFactory> >::ConstIterator j = factories.Begin();
+    while (j != factories.End()) {
+      const TypeInfo* typeInfo = j->second_->GetTypeInfo();
+      if (typeInfo->IsTypeOf<IoComponentBase>()) {
+        node_list.Push( String(typeInfo->GetTypeName()) );
+        //URHO3D_LOGRAW(typeInfo->GetTypeName() + " is a IoComponentBase\n");
+      }
+      j++;
     }
 
+    ///now just to test... lets loop the new string podvector
+    /*for(unsigned i=0; i<node_list.Size(); ++i)
+    {
+        URHO3D_LOGRAW(node_list[i] + " is a IoComponentBase\n");
+    }
+    */
+    //ResourceCache* cache = GetSubsystem<ResourceCache>();
+    //XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
+
+    //SetDefaultStyle(style);
+
+    /*UIElement* MainContainer = new UIElement(context_);
+    MainContainer->SetMinSize(800, 400);
+    MainContainer->SetMaxSize(2147483647, 2147483647);
+    MainContainer->SetLayoutMode(LM_HORIZONTAL);
+    //MainContainer->SetDefaultStyle(style);
+    
+    AddChild(MainContainer);
+
+    Window* nodelist = new Window(context_);
+    nodelist->SetName("NodeList");
+    nodelist->SetMinSize(200, 400);
+    nodelist->SetMaxSize(200, 2147483647);
+    //nodelist->SetDefaultStyle(style);
+
+    MainContainer->AddChild(nodelist);
+
+    ApplyAttributes();
+    UpdateLayout();*/
+    UIElement* nodelist = GetChild("NodeList",true);
+    if(nodelist != NULL)
+    {
+        URHO3D_LOGRAW("FOUND THE CHILD NODE");
+    }
+    else
+    {
+        URHO3D_LOGRAW("DID NOT FIND THE CHILD NODE");
+    }
 }
 
 IogramWindow::~IogramWindow()
@@ -91,7 +134,6 @@ void IogramWindow::RegisterObject(Context* context)
 }
 
 
-
 void IogramWindow::OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor)
 {
     //NOTES
@@ -106,6 +148,18 @@ void IogramWindow::OnHover(const IntVector2& position, const IntVector2& screenP
     }
     else
         SetCursorShape(dragMode_, cursor);
+
+    //it dpes find the child node
+    UIElement* nodelist = GetChild("NodeList",true);
+    if(nodelist != NULL)
+    {
+        URHO3D_LOGRAW("FOUND THE CHILD NODE");
+    }
+    else
+    {
+        URHO3D_LOGRAW("DID NOT FIND THE CHILD NODE");
+    }
+
 }
 
 

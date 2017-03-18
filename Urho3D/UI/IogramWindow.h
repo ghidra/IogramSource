@@ -42,10 +42,15 @@ public:
 
     /// Return UI rendering batches.
     //virtual void GetBatches(PODVector<UIBatch>& batches, PODVector<float>& vertexData, const IntRect& currentScissor);
-
+   // virtual bool LoadXML(const XMLElement& source, XMLFile* styleFile, bool setInstanceDefault = false);
     /// React to mouse hover.
     virtual void OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor);
     /// React to mouse drag begin.
+
+private:
+    Vector<String> node_list;//this will hold a list of loaded nodes
 };
+
+
 
 }
