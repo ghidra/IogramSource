@@ -28,25 +28,23 @@ namespace Urho3D
 {
 
 /// %Window %UI element that can optionally by moved or resized.
-class URHO3D_API IogramWindow : public Window
+class URHO3D_API IogramNodeList : public Window
 {
-    URHO3D_OBJECT(IogramWindow, Window);
+    URHO3D_OBJECT(IogramNodeList, Window);
 
 public:
     /// Construct.
-    IogramWindow(Context* context);
+    IogramNodeList(Context* context);
     /// Destruct.
-    virtual ~IogramWindow();
+    virtual ~IogramNodeList();
     /// Register object factory.
     static void RegisterObject(Context* context);
 
-    /// Return UI rendering batches.
-    //virtual void GetBatches(PODVector<UIBatch>& batches, PODVector<float>& vertexData, const IntRect& currentScissor);
-   // virtual bool LoadXML(const XMLElement& source, XMLFile* styleFile, bool setInstanceDefault = false);
-    /// React to mouse hover.
     virtual void OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor);
-    /// React to mouse drag begin.
-    //void HandleSomething(StringHash eventType, VariantMap& eventData);
+
+
+private:
+    Vector<String> node_list;//this will hold a list of loaded nodes
 };
 
 

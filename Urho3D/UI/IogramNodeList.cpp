@@ -31,7 +31,7 @@
 
 #include <Urho3D/Resource/ResourceCache.h>
 
-#include "IogramWindow.h"
+#include "IogramNodeList.h"
 #include "../../Core/IoComponentBase.h"
 
 #include <Urho3D/DebugNew.h>
@@ -43,17 +43,34 @@ namespace Urho3D
 
 static const int DEFAULT_RESIZE_BORDER = 4;
 
-//extern const char* UI_CATEGORY;
-const char* UI_CATEGORY = "UI";////this is used all over
-
-IogramWindow::IogramWindow(Context* context) :
+IogramNodeList::IogramNodeList(Context* context) :
     Window(context)
 {
     bringToFront_ = true;
     clipChildren_ = true;
     SetEnabled(true);
 
-   
+    //URHO3D_LOGWARNING("THIS IS A IOGRAM WINDOW");
+    //NOTES
+    //Should i get this everytime i make a window?
+    //one argument, it would let me get only the relevant nodes to whatever specific context this graph is
+    const HashMap<StringHash, SharedPtr<ObjectFactory> >& factories = context_->GetObjectFactories();
+    HashMap<StringHash, SharedPtr<ObjectFactory> >::ConstIterator j = factories.Begin();
+    while (j != factories.End()) {
+      const TypeInfo* typeInfo = j->second_->GetTypeInfo();
+      if (typeInfo->IsTypeOf<IoComponentBase>()) {
+        node_list.Push( String(typeInfo->GetTypeName()) );
+        //URHO3D_LOGRAW(typeInfo->GetTypeName() + " is a IoComponentBase\n");
+      }
+      j++;
+    }
+
+    ///now just to test... lets loop the new string podvector
+    for(unsigned i=0; i<node_list.Size(); ++i)
+    {
+        URHO3D_LOGRAW(node_list[i] + " is a IoComponentBase\n");
+    }
+    
     //ResourceCache* cache = GetSubsystem<ResourceCache>();
     //XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
 
@@ -77,21 +94,19 @@ IogramWindow::IogramWindow(Context* context) :
 
     ApplyAttributes();
     UpdateLayout();*/
-    
 
     //SubscribeToEvent(GetNode(), E_ELEMENTADDED, URHO3D_HANDLER(IogramWindow, HandleElementAdded));
     //SubscribeToEvent(E_LAYOUTUPDATED, URHO3D_HANDLER(IogramWindow, HandleSomething));
 
 }
 
-IogramWindow::~IogramWindow()
+IogramNodeList::~IogramNodeList()
 {
 }
 
-
-void IogramWindow::RegisterObject(Context* context)
+void IogramNodeList::RegisterObject(Context* context)
 {
-    context->RegisterFactory<IogramWindow>(UI_CATEGORY);
+    context->RegisterFactory<IogramNodeList>("UI");
 
     URHO3D_COPY_BASE_ATTRIBUTES(BorderImage);
     URHO3D_UPDATE_ATTRIBUTE_DEFAULT_VALUE("Bring To Front", true);
@@ -112,20 +127,13 @@ void IogramWindow::RegisterObject(Context* context)
 }
 
 
-void IogramWindow::OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor)
+void IogramNodeList::OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor)
 {
     //NOTES
     //so maybe in here, I can make my node menu item, when in the window and tab is pressed
 
     UIElement::OnHover(position, screenPosition, buttons, qualifiers, cursor);
 
-    if (dragMode_ == DRAG_NONE)
-    {
-        WindowDragMode mode = GetDragMode(position);
-        SetCursorShape(mode, cursor);
-    }
-    else
-        SetCursorShape(dragMode_, cursor);
 
 }
 
