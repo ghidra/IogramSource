@@ -1,6 +1,7 @@
 Components/CMakeFiles/*
 Components/Makefile
 Components/cmake_install.cmake
+Components/libComponents.a
 Core/CMakeFiles/*
 Core/Makefile
 Core/cmake_install.cmake
