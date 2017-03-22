@@ -54,10 +54,9 @@ IogramWindow::IogramWindow(Context* context) :
     SetEnabled(true);
 
    
-    //ResourceCache* cache = GetSubsystem<ResourceCache>();
-    //XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
-
-    //SetDefaultStyle(style);
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
+    SetStyleAuto(style);
 
     /*UIElement* MainContainer = new UIElement(context_);
     MainContainer->SetMinSize(800, 400);
@@ -110,7 +109,38 @@ void IogramWindow::RegisterObject(Context* context)
     // Modal auto dismiss is purposefully not an attribute, as using it can make the editor lock up.
     // Instead it should be set false in code when needed
 }
+bool IogramWindow::LoadXML(const XMLElement& source, XMLFile* styleFile, bool setInstanceDefault)
+{
+    Window::LoadXML(source,styleFile,setInstanceDefault);
 
+    /*ResourceCache* cache = GetSubsystem<ResourceCache>();
+    XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
+    //SetStyleAuto(style);
+
+    UIElement* MainContainer = new UIElement(context_);
+    MainContainer->SetMinSize(800, 400);
+    MainContainer->SetMaxSize(2147483647, 2147483647);
+    MainContainer->SetLayoutMode(LM_HORIZONTAL);
+    //MainContainer->SetDefaultStyle(style);
+    
+    AddChild(MainContainer);
+
+    
+    Window* nodelist = new Window(context_);
+    nodelist->SetName("NodeList");
+    nodelist->SetMinSize(200, 400);
+    nodelist->SetMaxSize(200, 2147483647);
+    //nodelist->SetDefaultStyle(style);
+
+    MainContainer->AddChild(nodelist);*/
+
+    //ApplyAttributes();
+
+    //EnableLayoutUpdate();
+    //UpdateLayout();
+
+    return true;
+}
 
 void IogramWindow::OnHover(const IntVector2& position, const IntVector2& screenPosition, int buttons, int qualifiers, Cursor* cursor)
 {

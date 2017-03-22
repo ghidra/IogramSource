@@ -50,6 +50,10 @@ IogramNodeList::IogramNodeList(Context* context) :
     clipChildren_ = true;
     SetEnabled(true);
 
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
+    SetStyleAuto(style);
+
     //URHO3D_LOGWARNING("THIS IS A IOGRAM WINDOW");
     //NOTES
     //Should i get this everytime i make a window?

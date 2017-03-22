@@ -39,6 +39,8 @@ public:
     virtual ~IogramWindow();
     /// Register object factory.
     static void RegisterObject(Context* context);
+    
+    virtual bool LoadXML(const XMLElement& source, XMLFile* styleFile, bool setInstanceDefault = false);
 
     /// Return UI rendering batches.
     //virtual void GetBatches(PODVector<UIBatch>& batches, PODVector<float>& vertexData, const IntRect& currentScissor);
