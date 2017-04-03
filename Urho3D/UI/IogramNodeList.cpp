@@ -33,6 +33,7 @@
 
 #include "IogramNodeList.h"
 #include "../../Core/IoComponentBase.h"
+#include "IogramNodeAddButton.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -63,8 +64,13 @@ IogramNodeList::IogramNodeList(Context* context) :
     while (j != factories.End()) {
       const TypeInfo* typeInfo = j->second_->GetTypeInfo();
       if (typeInfo->IsTypeOf<IoComponentBase>()) {
+        
         node_list.Push( String(typeInfo->GetTypeName()) );
+        
         //URHO3D_LOGRAW(typeInfo->GetTypeName() + " is a IoComponentBase\n");
+
+        
+
       }
       j++;
     }
@@ -73,6 +79,14 @@ IogramNodeList::IogramNodeList(Context* context) :
     for(unsigned i=0; i<node_list.Size(); ++i)
     {
         URHO3D_LOGRAW(node_list[i] + " is a IoComponentBase\n");
+
+        ////add the buttons to the list
+        IogramNodeAddButton* button = new IogramNodeAddButton(context_);
+        button->SetName("add node");
+        button->SetMinHeight(24);
+
+        // Add add node to Window
+        AddChild(button);
     }
     
     //ResourceCache* cache = GetSubsystem<ResourceCache>();
