@@ -35,6 +35,7 @@ class URHO3D_API IogramNodeAddButton : public Button
 public:
     /// Construct.
     IogramNodeAddButton(Context* context);
+    IogramNodeAddButton(Context* context, String label);
     /// Destruct.
     virtual ~IogramNodeAddButton();
     /// Register object factory.

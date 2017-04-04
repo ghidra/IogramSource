@@ -31,6 +31,9 @@
 
 #include <Urho3D/Resource/ResourceCache.h>
 
+#include <Urho3D/UI/LineEdit.h>
+#include <Urho3D/UI/Button.h>
+
 #include "IogramNodeList.h"
 #include "../../Core/IoComponentBase.h"
 #include "IogramNodeAddButton.h"
@@ -50,6 +53,10 @@ IogramNodeList::IogramNodeList(Context* context) :
     bringToFront_ = true;
     clipChildren_ = true;
     SetEnabled(true);
+
+    SetLayout(LM_VERTICAL, 6, IntRect(6, 6, 6, 6));
+    SetAlignment(HA_CENTER, VA_CENTER);
+
 
     ResourceCache* cache = GetSubsystem<ResourceCache>();
     XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
@@ -75,19 +82,29 @@ IogramNodeList::IogramNodeList(Context* context) :
       j++;
     }
 
+    /*LineEdit* lineEdit = new LineEdit(context_);
+    lineEdit->SetName("LineEdit");
+    lineEdit->SetMinHeight(24);
+    AddChild(lineEdit);
+    lineEdit->SetStyleAuto();*/
     ///now just to test... lets loop the new string podvector
     for(unsigned i=0; i<node_list.Size(); ++i)
     {
         URHO3D_LOGRAW(node_list[i] + " is a IoComponentBase\n");
 
         ////add the buttons to the list
-        IogramNodeAddButton* button = new IogramNodeAddButton(context_);
+        IogramNodeAddButton* button = new IogramNodeAddButton( context_, node_list[i] );
+        //Button* button = new Button(context_);
         button->SetName("add node");
-        button->SetMinHeight(24);
+        //button->SetLabel("WHAHAH");
+        //button->SetMinHeight(24);
 
         // Add add node to Window
         AddChild(button);
+        button->SetStyleAuto();
     }
+
+    URHO3D_LOGRAW("I GOTS THIS MANY KIDS: "+String(GetNumChildren()));
     
     //ResourceCache* cache = GetSubsystem<ResourceCache>();
     //XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");

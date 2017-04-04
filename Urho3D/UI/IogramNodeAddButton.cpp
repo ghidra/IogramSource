@@ -31,6 +31,8 @@
 
 #include <Urho3D/Resource/ResourceCache.h>
 
+#include <Urho3D/UI/Text.h>
+
 #include "IogramNodeAddButton.h"
 #include "../../Core/IoComponentBase.h"
 
@@ -43,22 +45,45 @@ namespace Urho3D
 
 static const int DEFAULT_RESIZE_BORDER = 4;
 
+IogramNodeAddButton::IogramNodeAddButton(Context* context, String label) :
+    Button(context)
+{
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
+    //SetStyleAuto(style);
+
+    //SetName("Add Node");
+    SetMinHeight(24);
+    SetMaxHeight(24);
+
+    Text* windowTitle = new Text(context_);
+    windowTitle->SetName("AddNodeButton");
+    windowTitle->SetText(label);
+
+    AddChild(windowTitle);
+
+    windowTitle->SetStyleAuto(style);
+}
 IogramNodeAddButton::IogramNodeAddButton(Context* context) :
     Button(context)
 {
 
     ResourceCache* cache = GetSubsystem<ResourceCache>();
     XMLFile* style = cache->GetResource<XMLFile>("UI/IogramDefaultStyle.xml");
-    SetStyleAuto(style);
+    //SetStyleAuto(style);
 
-    SetName("Add Node");
+    //SetName("Add Node");
     SetMinHeight(24);
-    
-    
-    //ResourceCache* cache = GetSubsystem<ResourceCache>();
-    //XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
+    SetMaxHeight(24);
 
-    //SetDefaultStyle(style);
+    Text* windowTitle = new Text(context_);
+    windowTitle->SetName("AddNodeButton");
+    windowTitle->SetText("Hello GUI!");
+
+    AddChild(windowTitle);
+
+    windowTitle->SetStyleAuto(style);
+    
 
     /*UIElement* MainContainer = new UIElement(context_);
     MainContainer->SetMinSize(800, 400);
@@ -83,6 +108,7 @@ IogramNodeAddButton::IogramNodeAddButton(Context* context) :
     //SubscribeToEvent(E_LAYOUTUPDATED, URHO3D_HANDLER(IogramWindow, HandleSomething));
 
 }
+
 
 IogramNodeAddButton::~IogramNodeAddButton()
 {
